@@ -1,0 +1,40 @@
+class Solution {
+public:
+    bool canJump(int A[], int n) {
+
+        
+        bool mark[n]; //record if a position is reachable or not
+        memset (mark,false,n); //initialize
+        
+        mark[0] = true;  //start from position 0;
+        int maxPos = 0;  //the last reachable position
+        
+        
+        if(n <= 1){   //already at the last position (when n = 1)
+            return true;
+        }
+        
+        
+        for(int i = 0; i < n; i++){
+            
+            //If cannot reach the ith positon or after
+            if(!mark[i]){
+                break;
+            }
+            
+            
+            int len = A[i];
+            
+            //update the reachability. Only need to update positions after the latest previously reachable position
+            for(int j = maxPos+1; j <= i+len ; j++){
+                if(j == n-1){   //already reach the latest index
+                    return true;
+                }
+                mark[j] = true;
+            }
+            maxPos = max(maxPos, i+len); //update the latest reachable position
+        }
+        return false;
+        
+    }
+};

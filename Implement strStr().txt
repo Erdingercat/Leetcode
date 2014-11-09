@@ -1,0 +1,44 @@
+class Solution {
+public:
+    char *strStr(char *haystack, char *needle) {
+        
+        char* idxBegin = haystack;
+        char* idxEnd = haystack;
+        char* idxTar = needle;   // use to count the length of the needle
+        
+        if(!*needle){
+            return haystack;
+        }
+        
+        while(*++idxTar){
+            idxEnd++;
+        }
+        
+        
+        while(*idxEnd){  // If the rest of source is shorter then needle, stop.
+
+            //for comparsing each bit.
+            char* idxS = idxBegin;
+            char* idxT = needle;
+            
+            //check each bit from current position.
+            while(*idxS && *idxT && *idxS == *idxT){
+                idxS++;
+                idxT++;
+            }
+            
+            if (!*idxT){ // find a match. return the mathing postion.
+                return idxBegin;
+            }
+            
+            if(!idxS){
+                break;
+            }
+            
+            //not match. move th next position.
+            idxBegin++;
+            idxEnd++;
+        }
+        return NULL;
+    }
+};

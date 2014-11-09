@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int maxSubArray(int A[], int n) {
+        
+        int maxSum;
+        
+        if( n == 0){
+            return 0; 
+        }else if( n == 1){
+            return A[0];
+        }
+        
+        // separate the whole array into 2 parts
+        int half = n/2;
+        
+        //if the maximum subarray includes both parts.
+        int maxLeft = A[half-1];
+        int maxRight = A[half];
+        int currLeft = A[half-1];
+        int currRight = A[half];
+        
+        //search from the middle to both ends;
+        for(int i = half-2; i >= 0; i--){
+            currLeft = currLeft + A[i];
+            maxLeft = max( maxLeft, currLeft);
+            
+        }
+        for(int i = half+1; i < n; i++){
+            currRight = currRight + A[i];
+            maxRight = max( maxRight, currRight);
+        }
+        maxSum = maxLeft + maxRight;
+        
+        
+        //if the maxmum subset is completely at the left part or right part
+        maxSum = max( maxSum, maxSubArray(A, half));
+        maxSum = max( maxSum, maxSubArray(A + half, n- half ));
+    
+        return maxSum;
+    }
+};

@@ -1,0 +1,51 @@
+class Solution {
+public:
+    vector<vector<int> > subsetsWithDup(vector<int> &S) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        
+        vector<vector<int> > res;
+        
+        stable_sort(S.begin(), S.end());
+        res = findSubset (S, 0);
+        return res;
+        
+    }
+    
+    vector<vector<int> > findSubset (vector<int> S, int start){
+        
+        int n = S.size()-start;
+        int end = start;
+        
+        // Group same elements together.
+        while(end < S.size()-1 && S[end] == S[end + 1]){
+            end++;
+        }
+        
+        vector<vector<int> > res;
+        
+        if(n == 0){
+            res.push_back(vector<int>() );
+            return res;
+        }
+
+        vector<vector<int> > subRes;
+        
+        int val = S[start];
+        
+        subRes = findSubset ( S, end+1);
+        res.insert(res.end(), subRes.begin(), subRes.end());
+        
+        for(int i = 0; i < end - start + 1; i++){
+            
+            vector<vector<int> >::iterator it;
+            for( it = subRes.begin(); it < subRes.end(); it++){
+                (*it).insert( (*it).begin(), val);
+            }
+            
+            res.insert(res.end(), subRes.begin(), subRes.end());   
+        }
+        
+        return res;
+    }
+};

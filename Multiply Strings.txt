@@ -1,0 +1,57 @@
+class Solution {
+public:
+    string multiply(string num1, string num2) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        
+        int len1 = num1.length();
+        int len2 = num2.length();
+        
+        // store value at each pos.
+        int buff[len1+len2];
+        // initialize buff
+        memset( buff, 0,  (len1+len2)* sizeof(int) );
+        
+        
+        // Notice; string is "REVERSED" to the actual value represented.
+        for(int i = 0; i < len1; i++){
+            for( int j = 0; j < len2; j++){
+                
+                int a = num1.at(len1 - i -1) - '0';
+                int b = num2.at(len2 - j -1) - '0';
+                
+                int tmp = a*b;
+                
+                buff[i+j] += tmp % 10;
+                buff[i+j+1] += tmp / 10;
+                
+            }
+        }
+        
+        
+        for (int idx = 0; idx <len1 + len2 -1 ; idx ++){
+            int val = buff[idx];
+            buff[idx]   =   val % 10;
+            buff[idx+1] +=  val/10; 
+            
+        }
+        
+        stringstream ss;
+        
+        int idx = len1 + len2 -1;
+        while(buff[idx] == 0){
+            idx --;
+        }
+        if(idx < 0){
+            ss << 0;
+        }
+
+
+
+        for (; idx >=0 ; idx --){
+            ss << buff[idx];
+        }        
+        
+        return ss.str();
+    }
+};

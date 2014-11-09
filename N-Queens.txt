@@ -1,0 +1,155 @@
+class Solution {
+public:
+    vector<vector<string> > solveNQueens(int n) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        
+        vector<vector<string> > res;
+        vector<vector<int> > valid; // 0: put queen, 1: valid;, -1: not valid
+        
+        for(int i = 0; i < n; i++){
+            vector<int> tmp;
+            for(int j = 0; j < n; j++){
+                tmp.push_back(1);
+            }
+            valid.push_back(tmp);
+        }
+        
+        // one queen on each row, start from the first row. 
+        put ( res, valid, n, 0);
+        
+         
+        
+        return res;
+        
+    }
+    
+    
+    
+    void put (vector<vector<string> > &res, vector<vector<int> > valid, int n, int row){
+        
+        // one queen on each row.
+        
+        // considering the queen on curret row.
+        for(int i = 0; i < n; i++){
+            if( valid [row][i] == 1 ){  // find a position to put the row-th queen on.
+                
+                if(row == n-1){   // finished searching, find a solution
+                    valid[row][i] = 0;
+                    
+                    vector<string> sol;
+                    // preparing the found solution.
+                    for(int j = 0; j < n; j++){
+                        string tmp;
+                        for(int k = 0; k < n; k++){
+                            if(valid[j][k] != 0){
+                                tmp += ".";
+                            }else{
+                                tmp += "Q";
+                            }
+                        }
+                        sol.push_back(tmp);
+                    }
+                    
+                    res.push_back(sol);
+                }
+                
+                else{  // continue upon current status.
+                    vector<vector<int> > newValid(valid);
+                    
+                    newValid[row][i] = 0;
+                    for(int j = row+1;j < n; j++){  // not on the same column
+                        newValid[j][i] = -1;
+                    }
+                    
+                    
+                    // not on the same dialognal
+                    int idx;
+                    idx = 1;
+                    while(row + idx < n && i + idx < n){ 
+                        newValid[row + idx][i + idx] = -1;
+                        idx++;
+                    }
+                    idx = 1;
+                    while(row + idx < n && i - idx >= 0){
+                        newValid[row + idx][i - idx] = -1;
+                        idx++;
+                    }
+                    
+                    // continue to put queen next row.
+                    put(res, newValid, n, row+1);
+                }
+            }
+        }
+    }
+};
+
+
+
+
+
+
+
+
+class Solution {
+public:
+    vector<vector<string> > solveNQueens(int n) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        
+        vector<vector<string> > res;
+        vector<int> pos; // 0: put queen, 1: valid;, -1: not valid
+        
+        for(int i = 0; i < n; i++){
+            pos.push_back(0);
+        }
+        
+        // one queen on each row, start from the first row. 
+        put ( res, pos, n, 0);
+        return res;   
+    }
+    
+
+    void put (vector<vector<string> > &res, vector<int > pos, int n, int row){
+        for(int i = 0; i < n; i++){
+            
+            bool flag = true;
+            
+            for(int j = row-1; j >= 0; j--){
+                if( pos[j] == i
+                || i - row == pos[j] - j
+                || i + row == pos[j] + j){
+                    flag = false;
+                    break;
+                }
+            }
+            
+            if (!flag)
+                continue;
+                  
+            pos[row] = i; 
+            if(row == n-1){
+                
+                vector<string> currRes;
+                
+                for(int k = 0; k < n; k++){
+                    string tmp;
+                    tmp.resize(n);
+                    
+                    for(int l = 0; l < n; l++){
+                        tmp[l] = '.';
+                    }
+                
+                    tmp[pos[k]] = 'Q';
+                    currRes.push_back(tmp);
+                }
+                
+                
+                res.push_back(currRes);
+                continue;
+            }
+            
+            put(res, pos, n,row + 1);
+        }   
+    }
+};

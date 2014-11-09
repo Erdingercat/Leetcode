@@ -1,0 +1,37 @@
+class Solution {
+public:
+    string addBinary(string a, string b) {
+        if(a.empty() && b.empty())
+        {
+            string e;
+            e.clear();
+            return e;
+        }
+            
+        else if (a.empty())
+            return b;
+        else if (b.empty())
+            return a;
+        else{
+            int aLen = a.length();
+            int bLen = b.length();
+            string aSubstr(a, 0, aLen-1);
+            string bSubstr(b, 0, bLen-1);
+            
+            if (a[aLen-1] == '0' && b[bLen-1] == '0'){
+                return addBinary(aSubstr, bSubstr)+= "0" ;
+            }                
+            else if (a[aLen-1] == '0' && b[bLen-1] == '1'){
+                return addBinary(aSubstr, bSubstr)+= "1" ;
+            }
+            else if (a[aLen-1] == '1' && b[bLen-1] == '0'){
+                return addBinary(aSubstr, bSubstr)+= "1" ;
+            }
+            else if (a[aLen-1] == '1' && b[bLen-1] == '1'){
+                string carry = "1";
+                return addBinary(addBinary(aSubstr, bSubstr),carry)+= "0";
+                
+            }
+        }
+    }
+};

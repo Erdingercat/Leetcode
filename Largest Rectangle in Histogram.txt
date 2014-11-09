@@ -1,0 +1,94 @@
+class Solution {
+public:
+    int largestRectangleArea(vector<int> &height) {
+        
+        int maxArea = 0;
+        int len = height.size();
+        
+        for(int i = 0; i < len; i++){
+            int left = i, right = i;
+            int currArea;
+            int currHeight = height[i];
+            
+            while( left >= 1  && height[left-1] >= currHeight){
+                left--;
+            }
+            while( right < len-1  && height[right+1] >= currHeight){
+                right++;
+            }
+            currArea = (right-left+1)*currHeight;
+            maxArea = max(maxArea, currArea);
+            
+        }
+        return maxArea;
+    }
+};
+
+
+
+class Solution {
+public:
+    int largestRectangleArea(vector<int> &height) {
+        stack<int> maxHeight;
+        stack<int> idxBegin;
+        
+        int len = height.size();
+        int maxArea = 0;
+        
+        for(int i = 0; i < len; i++){
+            
+            int currHeight = height[i];
+            
+            //Case 1 :  current height is larger, possible to start a new higher rectangle 
+            if( maxHeight.empty() || currHeight > maxHeight.top()){
+                maxHeight.push(currHeight);
+                idxBegin.push(i);
+            }
+            
+            //Case 2: Meet lower height, some rectangle candidates cannnot be expend
+            else if (currHeight < maxHeight.top()){
+                
+                int idxPrev = 0;
+                
+                int prevHeight;
+                int prevBegin;
+                
+                
+                //rectangles with larger heights stops expending
+                while( !maxHeight.empty() && currHeight < maxHeight.top() ){
+
+                    prevHeight = maxHeight.top();
+                    prevBegin = idxBegin.top();
+                    
+                    int area = prevHeight* (i-prevBegin);
+                    
+                    maxArea = max(area, maxArea);
+                    maxHeight.pop();
+                    idxBegin.pop();
+                    
+                }
+                
+                // put the current height back into record
+                maxHeight.push(currHeight);
+                idxBegin.push(prevBegin);
+            } 
+        }
+        
+        
+        //remember to consider the possible candidates that still in the stack
+        while(!maxHeight.empty()){
+            
+            int prevHeight = maxHeight.top();
+            int prevBegin = idxBegin.top();
+            
+            int area = prevHeight* (len-prevBegin);
+            maxArea = max(area, maxArea);
+            
+            maxHeight.pop();
+            idxBegin.pop();
+            
+        }
+        return maxArea;
+        
+    }
+};

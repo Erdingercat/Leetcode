@@ -1,0 +1,53 @@
+class Solution {
+public:
+    bool isPalindrome(string s) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        string::iterator it_b;
+        string::iterator it_e;
+        
+        it_b = s.begin();
+        it_e = s.end();
+        
+        while(it_b < it_e){
+            
+            while(it_b < it_e
+            && (
+                (*it_b)<48
+                || ((*it_b) >57 && (*it_b) <65)
+                || ((*it_b) >90 && (*it_b) <97)
+                || (*it_b) >122
+                ) 
+            )
+            {
+                it_b++; 
+            }
+            
+            while(it_b < it_e
+            && (
+                (*it_e)<48
+                || ((*it_e) >57 && (*it_e) <65)
+                || ((*it_e) >90 && (*it_e) <97)
+                || (*it_e) >122
+                ) 
+            )
+            {
+                it_e--;
+            }
+            
+            if(it_b > it_e){
+                return false;
+            }
+            
+            if((*it_b) != (*it_e)
+            && (*it_b) != (*it_e) + 32
+            && (*it_b) != (*it_e) - 32){
+                return false;
+            }
+            
+            it_b++;
+            it_e--;
+        }
+        return true;
+    }
+};

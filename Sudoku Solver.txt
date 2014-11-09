@@ -1,0 +1,96 @@
+class Solution {
+public:
+
+    bool finished ; // used to record if this sudoku has solved or not.
+    
+    void solveSudoku(vector<vector<char> > &board) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        finished = false;
+        
+        
+        // Find first position that didn't filled out yet
+        bool empty_spot = false;
+        int row = 0, col = 0;
+        
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                if(board[i][j] == '.'){
+                    empty_spot = true;
+                    row = i;
+                    col = j;
+                    break;
+                }
+            }
+            
+            if(empty_spot){
+                break;
+            }
+        }
+            
+        
+        // No empty position : solved.
+        if(!empty_spot){
+            finished = true;
+            return;
+        }
+        
+        
+        
+        // Find all possible value for current empty field
+        vector<bool> possible = findOK (row, col, board);
+        
+        
+        for(int k = 0; k < 9; k++){            
+            if (possible[k]){  // For posible value, try with this value and continue to fill out other fields
+                board[row][col] = k+49;
+                solveSudoku(board);   
+                
+                if(finished){ // If find solution: don't need to continue
+                    return;
+                }
+            }
+            
+        }
+        board[row][col] = '.';    
+    }
+    
+    
+    // Find all possible value for current position 
+    vector<bool> findOK (int row, int col, vector<vector<char> > board)
+    {
+        vector<bool> possChar;
+        
+        for(int i = 0; i < 9; i++){
+            possChar.push_back(true);
+        }
+        
+        
+        for(int i = 0; i < 9; i++){
+            
+            int idx = board[i][col] - 49;
+            if(idx >= 0)
+                possChar[idx] = false;
+            
+            idx = board[row][i] - 49;
+            if(idx >= 0)
+                possChar[idx] = false;
+            
+        }
+        
+        
+        int block_idx_row = row / 3;
+        int block_idx_col = col / 3;
+        
+        for(int i = block_idx_row * 3; i < (block_idx_row + 1)* 3; i ++){
+            for(int j = block_idx_col * 3; j < (block_idx_col + 1)* 3; j ++){    
+                int idx = board[i][j]-49;
+                if(idx >= 0)
+                    possChar[idx] = false;
+            }
+        }
+        
+        return possChar;
+        
+    }
+};

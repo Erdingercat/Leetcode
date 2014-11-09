@@ -1,0 +1,50 @@
+class Solution {
+public:
+    int totalNQueens(int n) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        
+        int resNum = 0;
+        vector<int> pos; // 0: put queen, 1: valid;, -1: not valid
+        
+        for(int i = 0; i < n; i++){
+            pos.push_back(0);
+        }
+        
+        // one queen on each row, start from the first row. 
+        put ( resNum, pos, n, 0);
+        return resNum;
+    }
+    
+    
+    void put (int &resNum, vector<int > pos, int n, int row){
+        
+        for(int i = 0; i < n; i++){
+            
+            bool flag = true;
+            
+            for(int j = row-1; j >= 0; j--){
+                int pos_j = pos[j]; 
+                if( pos_j == i
+                || i - row == pos_j - j
+                || i + row == pos_j + j){
+                    flag = false;
+                    break;
+                }
+            }
+            
+            if (!flag)
+                continue;
+            
+                                
+            pos[row] = i; 
+            
+            if(row == n-1){
+                resNum++;
+                continue;
+            }
+            
+            put(resNum, pos, n,row + 1);
+        }   
+    }
+};

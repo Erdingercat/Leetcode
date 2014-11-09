@@ -1,0 +1,59 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+
+    // Reverse first K emements in list head;
+    ListNode *reverseK (ListNode *head, int k){
+        ListNode *prev, *curr, *post;
+        prev = NULL;
+        curr = head;
+        post = NULL;
+        
+        if(head != NULL){
+            post = curr->next;
+        }
+        
+        int cnt = 0;
+        while(curr != NULL && cnt < k){
+            curr->next = prev;
+            prev = curr;
+            curr = post;
+            if(post != NULL)
+                post = post -> next;
+            cnt++;
+        }
+        head->next = curr;
+        return prev;
+        
+    }
+    
+    ListNode *reverseBetween(ListNode *head, int m, int n) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+       
+       
+        // add a new node to avoid empty list;
+        ListNode *new_head = new ListNode(INT_MIN);
+        new_head->next = head;
+        
+        ListNode *prev, *start;
+        prev = new_head;
+        start = head;
+        
+        for(int i = 1; i < m; i++){
+            prev = prev->next;
+            start = start->next;
+        }
+        
+        prev->next = reverseK(start, n-m+1);
+        return new_head->next;
+        
+    }
+};

@@ -1,0 +1,50 @@
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+        vector<string> resSet; //result for return;
+        
+        //stop condition
+        if(n == 0){
+            return resSet;
+        } else if (n == 1){
+            resSet.push_back("()");
+        }
+        
+        
+        //recursive:
+        vector<string> subRes = generateParenthesis(n-1);
+        vector<string>::iterator it;
+        
+        
+        for(it = subRes.begin(); it < subRes.end(); it++){
+            
+            string curr = *it;
+            int strLen = curr.length();
+            int cntLeft = 0;
+            int cntRight = 0;
+            
+            
+            //place the nth "(" at the begining.
+            //check where is valid to put nth ")".
+            for(int i = 0; i < strLen; i++){
+                if ( cntLeft == cntRight){  //valid position.
+                    string newStr(curr);
+                    newStr.insert(newStr.begin()+i, ')');
+                    newStr.insert(newStr.begin(), '('); //start with the nth "("
+                    resSet.push_back(newStr);
+                }
+                                
+                //used for validation.
+                if (curr[i] == '('){
+                    cntLeft++;
+                }else{
+                    cntRight++;
+                }
+            }
+            
+            //don't forget the last position.
+            resSet.push_back("("+curr + ")");
+        }
+        return resSet;
+    }
+};

@@ -1,0 +1,48 @@
+class Solution {
+public:
+    vector<int> searchRange(int A[], int n, int target) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        
+        vector<int> res;
+        res.push_back( BSBegin( A, 0, n-1, target) );
+        res.push_back( BSEnd( A, 0, n-1, target) );
+        return res;
+        
+    }
+    
+    
+    int BSBegin(int A[], int l, int r, int target){
+        
+        int idx = (l+r)/2;
+        int val = A[idx];
+                
+        if ( target == val && idx == l){
+            return l;
+        }
+        
+        if ( idx > l && target <= val){
+            return BSBegin (A, l, idx, target);
+        }else if ( idx < r && target > val){
+            return BSBegin (A, idx +1, r, target);
+        }
+        return -1;
+    }
+    
+    int BSEnd(int A[], int l, int r, int target){
+        
+        int idx = ceil (double(l+r)/2);
+        int val = A[idx];
+        
+        if( target == val && idx == r){
+            return r;
+        }
+        
+        if( idx > l  && target < val){
+            return BSEnd (A, l, idx -1, target);
+        }else if ( idx < r && target >= val){
+            return BSEnd (A, idx, r, target);
+        }
+        return -1;
+    }
+};

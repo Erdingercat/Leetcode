@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<vector<int> > permute(vector<int> &num) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        
+        vector<vector<int> >res;
+        if(num.size() == 1){
+            vector<int> val;
+            val.push_back(*num.begin());
+            res.push_back(val);
+        }
+        
+        vector<int>::iterator it;
+        for(it = num.begin(); it < num.end(); it++){
+            int curr = *it;
+            num.erase(it);
+            vector<vector<int> > subres = permute(num);
+            
+            vector<vector<int> >::iterator it2;
+            for(it2 = subres.begin(); it2 < subres.end(); it2++){
+                (*it2).insert((*it2).begin(), curr);
+            }
+            
+            res.insert(res.end(), subres.begin(), subres.end());
+            num.insert(it,curr);
+        }
+        
+        return res;
+    }
+    
+    
+};

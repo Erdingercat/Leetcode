@@ -1,0 +1,45 @@
+class Solution {
+public:
+    vector<string> anagrams(vector<string> &strs) {
+
+        vector<string> resSet;
+        unordered_map<string, vector<string> > map;
+        
+        vector<string>::iterator itStr;
+        for(itStr = strs.begin(); itStr < strs.end(); itStr++){
+            string currStr = *itStr;
+            
+            /*int* charCnt = new int[26];
+            for(int i = 0 ; i < 26; i++){
+                charCnt[i] = 0;
+            }
+            
+            string::iterator itCh;
+            for(itCh = currStr.begin(); itCh < currStr.end(); itCh++ ){
+                int c = (int)(*itCh);
+                charCnt[c-97]++;
+            }
+            
+            stringstream buff;
+            for(int i = 0 ; i < 26; i++){
+                buff << charCnt[i] << ",";
+            }
+            string key = buff.str();*/
+            string key(currStr);
+            stable_sort(key.begin(), key.end());
+            map[key].push_back(currStr);
+        }
+        
+        
+        
+        unordered_map<string, vector<string> >::iterator itGroup;
+        for(itGroup = map.begin(); itGroup != map.end(); itGroup++){
+            vector<string> currGroup = itGroup->second;
+            if(currGroup.size() > 1){
+                resSet.insert(resSet.begin(), currGroup.begin(), currGroup.end());
+            }
+        }
+        return resSet;
+        
+    }
+};

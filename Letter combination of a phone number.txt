@@ -1,0 +1,79 @@
+class Solution {
+public:
+    vector<string> letterCombinations(string digits) {
+        vector<string> res;
+        
+        int len = digits.size();
+        
+        //base cases: stop condition
+        if(len == 0){
+            res.push_back("");
+            return res;
+        }else if(len == 1){
+            switch(digits[0]){
+                case '2':
+                    res.push_back("a");
+                    res.push_back("b");
+                    res.push_back("c");
+                    break;
+                case '3':
+                    res.push_back("d");
+                    res.push_back("e");
+                    res.push_back("f");
+                    break;
+                case '4':
+                    res.push_back("g");
+                    res.push_back("h");
+                    res.push_back("i");
+                    break;
+                case '5':
+                    res.push_back("j");
+                    res.push_back("k");
+                    res.push_back("l");
+                    break;
+                case '6':
+                    res.push_back("m");
+                    res.push_back("n");
+                    res.push_back("o");
+                    break;
+                case '7':
+                    res.push_back("p");
+                    res.push_back("q");
+                    res.push_back("r");
+                    res.push_back("s");
+                    break;
+                case '8':
+                    res.push_back("t");
+                    res.push_back("u");
+                    res.push_back("v");
+                    break;
+                case '9':
+                    res.push_back("w");
+                    res.push_back("x");
+                    res.push_back("y");
+                    res.push_back("z");
+                    break;
+                default:
+                    break;
+            }
+            return res;
+        }
+        
+        //recursion
+        string a(digits, 0, 1);
+        string b(digits, 1, len-1);
+        vector<string> subResA = letterCombinations (a);
+        vector<string> subResB = letterCombinations (b);
+        
+        for(vector<string>::iterator itA = subResA.begin(); itA < subResA.end(); itA++){
+            for(vector<string>::iterator itB = subResB.begin(); itB < subResB.end(); itB++){
+                string combine = *itA+ *itB;
+                res.push_back(combine);
+            }
+        }
+        
+        
+        
+        return res;
+    }
+};

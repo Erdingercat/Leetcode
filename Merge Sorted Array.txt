@@ -1,0 +1,19 @@
+class Solution {
+public:
+    void merge(int A[], int m, int B[], int n) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+            
+        
+        int idxA = m-1;
+        int idxB = n-1;
+        int idxCurrPos = m+n-1;
+        
+        while(idxA >= 0 && idxB >= 0){
+            A[idxCurrPos--] = A[idxA] > B[idxB] ? A[idxA--]:B[idxB--];
+        }
+        while(idxB >= 0){
+            A[idxCurrPos--] = B[idxB--];
+        }
+    }
+};

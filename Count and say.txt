@@ -1,0 +1,36 @@
+class Solution {
+public:
+    string countAndSay(int n) {
+
+        string res; //result for return;
+        
+        //stop condition
+        if(n == 1){
+            return "1";
+        }
+        
+        //recursion
+        string prev = countAndSay(n-1);
+        
+        //saying prev
+        
+        char c = prev[0]; //current char;
+        int cnt = 1; //count of current char;
+        
+        stringstream tmpStr; //buffer for output stream
+        string::iterator it;
+        for(it = prev.begin()+1; it < prev.end(); it++){
+            if(c != *it){    //new char occurs. write old record;
+                tmpStr << cnt << c;
+                c = *it; //updat current char
+                cnt = 1; //renew count
+            }else{
+                cnt++;
+            }
+        }
+        tmpStr << cnt << c; //remember to write the last group!!!
+        res = tmpStr.str();
+        
+        return res;
+    }
+};

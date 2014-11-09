@@ -1,0 +1,109 @@
+class Solution {
+public:
+    vector<vector<int> > table;
+    
+    int maximalRectangle(vector<vector<char> > &matrix) {
+        
+        // matrix is an N*M matrix
+        int N = matrix.size();
+        if(N ==0){
+            return 0;
+        }
+        
+        int M = matrix[0].size();   
+        if(M == 0){
+            return 0;
+        }
+        
+        int maxArea = 0;
+    
+        
+        for(int i = 0; i < N; i++){
+            for(int j = 0; j < M; j++){
+                
+                //int tmp =  area(i,j, matrix);
+                //maxArea = max( maxArea,tmp );
+                // Calculate the maximum area starting from (i,j)  i.e. using (i,j) as left-top corner
+                
+                if(matrix[i][j] == '0'){ //if(i,j) is 0, no need to consider it.
+                    continue;
+                }
+                
+                int bound;
+                bound = M-1;
+                for(int p = i; p < N; p++){ //search row by row , from i to the last row N
+                       
+                    if(matrix[p][j] == '0'){ //if a row p doesn't have 1 in column j, then no need to continue;
+                        break;
+                    }
+                    
+                    //calculate how many continuous 1s in row p, (from column j)
+                    int q = j;
+                    while(q < M && matrix[p][q] == '1'){
+                        q++;
+                    }
+                    q--;
+                    
+                    bound = min( q, bound);  // if row p doesn't have so much 1s from j, using it needs to narrow down the width. 
+                    int currArea = ( bound -j +1) * (p-i+1);  //calculate the area using current row p
+                    maxArea = max(maxArea, currArea);  //update the max area if needed.
+                }
+                //Finish calculating the maximum area starting from (i,j)
+            }
+        }
+        return maxArea;
+    }
+    
+    
+    
+/*    int area (int i, int j, vector<vector<char> > matrix){
+        
+        int N = matrix.size();
+        
+        if(N ==0){
+            return 0;
+        }
+        
+        int M = matrix[0].size(); 
+        
+        if(M == 0){
+            return 0;
+        }
+        
+
+        
+        
+        if(matrix[i][j] == '0'){
+            return 0;
+        }
+        
+        int bound;
+        int maxArea = 0;
+        
+        
+        bound = M-1;
+        for(int p = i; p < N; p++){
+            
+            
+            if(matrix[p][j] == '0'){
+                break;
+            }
+            
+            int q = j;
+            
+            while(q < M && matrix[p][q] == '1'){
+                q++;
+            }
+            q--;
+            
+            
+            bound = min( q, bound);
+            int currArea = ( bound -j +1) * (p-i+1);
+            
+
+            maxArea = max(maxArea, currArea);
+        }
+
+        return maxArea;
+    }*/
+};

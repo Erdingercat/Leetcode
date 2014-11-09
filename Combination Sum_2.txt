@@ -1,0 +1,43 @@
+class Solution {
+public:
+    vector<vector<int> > combinationSum2(vector<int> &num, int target) {
+        
+        stable_sort(num.begin(), num.end());
+        
+        vector<vector<int> > resSet; //result for return;
+        int prev = 0;
+        
+        vector<int>::iterator it;
+        for(it = num.begin(); it < num.end(); it++){
+            
+            //prevent duplication
+            if(*it == prev){
+                continue;
+            }
+            
+            //end condition
+            if (*it > target){
+                break;
+            }else if(*it == target){
+                vector<int> findMatch;
+                findMatch.push_back(*it);
+                resSet.push_back(findMatch);
+                break;
+            }
+            
+            
+            //recursive
+            vector<int> subNum(it+1, num.end());
+            vector<vector<int> > subRes = combinationSum2(subNum, target - *it);
+            
+            vector<vector<int> >::iterator itRes;
+            for(itRes = subRes.begin(); itRes < subRes.end(); itRes++){
+                itRes->insert(itRes->begin(), *it);
+            }
+            resSet.insert(resSet.end(), subRes.begin(), subRes.end());
+            
+            prev = *it;
+        }
+        return resSet;
+    }
+};

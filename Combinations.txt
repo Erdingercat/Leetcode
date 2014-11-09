@@ -1,0 +1,41 @@
+class Solution {
+public:
+    vector<vector<int> > combine(int n, int k) {
+        
+        vector<vector<int> >resSet; //result for return;
+        
+        //end condition
+        if(k == 1){ //if just choose 1, return empty set
+            for(int i = 1; i <= n; i++){
+                vector<int> res;
+                res.push_back(i);
+                resSet.push_back(res);
+            }
+            return resSet;
+            
+        }else if (n == k){ //if choose all elements
+            vector<int> res;
+            for(int i = 1; i <= n; i++){
+                res.push_back(i);
+            }
+            resSet.push_back(res);
+            return resSet;
+        }
+        
+        //recursive : 2 ways, choose n or not
+        vector<vector<int> >subRes;
+        resSet = combine(n-1, k);  //n not choose
+        subRes = combine(n-1, k-1); //n choose, need to add n to the back.
+        
+        //add n to the back
+        vector<vector<int> >::iterator it;
+        for(it = subRes.begin(); it < subRes.end(); it++){
+            it->push_back(n);
+        }
+        
+        //combine sub results from both ways
+        resSet.insert(resSet.begin(), subRes.begin(), subRes.end());
+        
+        return resSet;
+    }
+};

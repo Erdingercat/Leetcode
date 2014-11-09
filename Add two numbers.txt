@@ -1,0 +1,71 @@
+v1
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
+        if(l1 == NULL && l2 == NULL){
+            return NULL;
+        }else if (l1 == NULL){
+            return l2;
+        }else if (l2 == NULL){
+            return l1;
+        }else{//both are not null
+            int sum = l1->val + l2->val;
+            ListNode *answer;
+            ListNode *carry;
+            
+            carry = new ListNode(sum/10);
+            answer = new ListNode(sum%10);
+            if(carry->val > 0 )
+                answer->next = addTwoNumbers(addTwoNumbers(l1->next, l2->next),carry);
+            else
+                answer->next = addTwoNumbers(l1->next, l2->next);
+
+            return answer;
+        }
+        
+    }
+};
+
+
+
+v2
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
+        if(l1 == NULL && l2 == NULL){
+            return NULL;
+        }else if (l1 == NULL){
+            return l2;
+        }else if (l2 == NULL){
+            return l1;
+        }else{//both are not null
+            int sum = l1->val + l2->val;
+            ListNode *answer;
+            ListNode *carry = NULL;
+            
+            if(sum >= 10)
+                carry = new ListNode(sum/10);
+            answer = new ListNode(sum%10);
+            answer->next = addTwoNumbers(addTwoNumbers(l1->next, l2->next),carry);
+ 
+            return answer;
+        }
+        
+    }
+};

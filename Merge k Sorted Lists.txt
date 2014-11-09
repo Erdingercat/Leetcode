@@ -1,0 +1,60 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+    
+
+// set priority criteria for priority queue
+struct CompareNode : public std::binary_function<ListNode*, ListNode*, bool>                                                                                       
+{  
+  bool operator()(const ListNode* lhs, const ListNode* rhs) const  
+  {  
+     return lhs->val >= rhs->val;  
+  }  
+}; 
+
+
+
+public:
+    ListNode *mergeKLists(vector<ListNode *> &lists) {
+        
+        ListNode* res = new ListNode(INT_MAX); // add an extra node at the begin, that way we don't need to handle empty case.
+        ListNode* resCurr = res;
+        
+        priority_queue<ListNode*, vector<ListNode*>, CompareNode> smallest;
+        
+        vector<ListNode*>::iterator it;
+        
+        for(it = lists.begin(); it < lists.end(); it++){
+            if(*it != NULL)
+                smallest.push(*it);
+        }
+        
+    
+        
+        while(!smallest.empty()){
+            
+            resCurr->next = smallest.top(); //add to the end of res
+            smallest.pop();
+            
+            resCurr = resCurr->next;
+            
+            if(resCurr->next!= NULL){                  
+                smallest.push(resCurr->next);
+            }
+            
+            
+            resCurr->next = NULL;   // remove the link of nodes that already added into res
+        }
+        
+        return res->next;  // remember to ignore the extra node
+        
+        
+    }
+    
+};

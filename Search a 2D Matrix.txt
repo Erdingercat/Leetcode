@@ -1,0 +1,43 @@
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int> > &matrix, int target) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        
+        int m = matrix.size();
+        if(m <= 0){
+            return false;
+        }
+        int n = matrix[0].size();
+        if(n <= 0){
+            return false;
+        }
+        
+        
+        for(int i = 0; i < m; i++){
+            if(matrix[i][n-1] < target){
+                continue;
+            }
+            return binarySearch(matrix[i], 0, n-1, target);
+        }
+        return false;
+        
+    }
+    
+    bool binarySearch( vector<int> row, int l, int r, int target) {
+        int idx = (l+r) /2;
+        int val = row[idx];
+        
+        if (target == val){
+            return true;
+        }
+        
+        if(idx > l && target < val){
+            return binarySearch (row, l, idx-1, target);
+        }else if(idx < r && target >val) {
+            return binarySearch (row, idx+1, r, target);
+        }
+        
+        return false;
+    }
+};

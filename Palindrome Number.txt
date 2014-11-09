@@ -1,0 +1,35 @@
+class Solution {
+public:
+    bool isPalindrome(int x) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        
+        if (x < 0){
+            return false;
+        }
+        
+        
+        int tmp = x;
+        int len = 0;
+        
+        while(tmp >0){
+            len++;
+            tmp = tmp/10;
+        }
+        
+        int i = 0 ; 
+        while (len -1 -i > i){
+            int l = pow(10,len-1-i);
+            int r = pow(10,i);
+            
+            int li = x/l;
+            int ri = x/r;
+            if ( (li%10) != (ri%10)){
+                return false;
+            }
+            i++;
+        }
+        return true;
+        
+    }
+};

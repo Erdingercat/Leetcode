@@ -1,0 +1,36 @@
+class Solution {
+public:
+    double pow(double x, int n) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        
+       if( x == 1 || n == 0){
+            return 1;
+        }
+        else if (x == -1){
+            if( n%2 == 0){
+                return 1;
+            }else
+            return -1;
+        }
+        
+        
+        int idx ;
+        double tmpRes;
+        double res = 1;
+        int absn = n>0?n:-n;
+        
+        
+        
+        while (absn)
+        {
+            if (absn & 1)
+                res *= x;
+            absn >>= 1;
+            x *= x;
+        }
+        
+
+        return n>0?res:1/res;
+    }
+};

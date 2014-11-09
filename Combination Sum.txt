@@ -1,0 +1,43 @@
+class Solution {
+public:
+    vector<vector<int> > combinationSum(vector<int> &candidates, int target) {
+        
+        stable_sort(candidates.begin(), candidates.end());
+        
+        vector<vector<int> > resSet; //result for return;
+        int prev = 0;
+        
+        vector<int>::iterator it;
+        for(it = candidates.begin(); it < candidates.end(); it++){
+            
+            //prevent duplication
+            if(*it == prev){
+                continue;
+            }
+            
+            //end condition
+            if (*it > target){
+                break;
+            }else if(*it == target){
+                vector<int> findMatch;
+                findMatch.push_back(*it);
+                resSet.push_back(findMatch);
+                break;
+            }
+            
+            
+            //recursive
+            vector<int> subCand(it, candidates.end());
+            vector<vector<int> > subRes = combinationSum(subCand, target - *it);
+            
+            vector<vector<int> >::iterator itRes;
+            for(itRes = subRes.begin(); itRes < subRes.end(); itRes++){
+                itRes->insert(itRes->begin(), *it);
+            }
+            resSet.insert(resSet.end(), subRes.begin(), subRes.end());
+            
+            prev = *it;
+        }
+        return resSet;
+    }
+};

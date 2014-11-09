@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        
+        int prevOccur[26];
+        
+        memset(prevOccur, -1, 26*sizeof(int));
+        
+        int substrBegin = 0;
+        int maxLen = 0;
+        int len = s.size();
+        
+        for(int i = 0; i < len; i++){
+            
+            char c = s[i];        
+            int cIdx = (int) c;
+            cIdx -= 97;
+            
+            if (prevOccur[cIdx] >= substrBegin){
+                maxLen = max( maxLen, i-substrBegin);
+                substrBegin  = prevOccur[cIdx] +1 ;
+            }    
+            prevOccur[cIdx] = i;
+        }
+        
+        maxLen = max( maxLen, len-substrBegin);
+        
+        return maxLen;
+    }
+};

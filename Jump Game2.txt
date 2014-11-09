@@ -1,0 +1,34 @@
+class Solution {
+public:
+    int jump(int A[], int n) {
+        
+        int numSteps[n];
+        memset(numSteps, INT_MAX , n);
+        numSteps[0] = 0;
+        
+        int lastIdx = 0;
+        
+        if(n == 1){
+            return 0;
+        }
+        
+        for(int i = 0; i < n ; i++){
+            
+            if(numSteps[i] == INT_MAX){
+                break;
+            }
+            
+            int len = A[i];
+            
+            for(int j =lastIdx+1; j <= i+len; j++ ){
+                numSteps[j] = numSteps[i]+1;
+                if(j == n-1){
+                    return numSteps[j];
+                }
+            }
+            lastIdx = max(i+len, lastIdx);
+            
+        }
+        return INT_MAX;
+    }
+};

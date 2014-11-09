@@ -1,0 +1,65 @@
+class Solution {
+public:
+    vector<string> restoreIpAddresses(string s) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        vector<string> res;
+        res = validIP(s, 4);
+        return res;
+    }
+    
+    vector<string> validIP(string s, int ith){
+        
+        assert(ith > 0 && ith <= 4);
+        
+        vector<string> res;
+        
+        if(ith == 1){
+            
+            if (validNum(s)){
+                res.push_back(s);
+            }
+            return res;
+        }else{
+            
+            vector<string> subRes;
+            
+            for(int i = 1; i <= 3; i++){
+                if(s.size() <= i)
+                    break;
+                    
+                string prefix = s.substr(0,i);
+                string postfix = s.substr(i);
+                
+                if (! validNum(prefix)){
+                    break;
+                }
+                
+                subRes = validIP(postfix, ith-1);
+                for(vector<string>::iterator it = subRes.begin(); it < subRes.end(); it++){
+                    *it = prefix + "." + (*it);
+                }
+                res.insert(res.end(), subRes.begin(), subRes.end());
+            }
+            return res;   
+        }
+    }
+    
+    
+    bool validNum( string s){
+
+        int val = atoi( s.c_str());
+        
+        if (val < 0 || val > 255){
+            return false;
+        }
+        if (val > 0 && s[0] == '0'){
+            return false;
+        }
+        if (val == 0 && s.size() > 1){
+            return false;
+        }
+        
+        return true;
+    }
+};

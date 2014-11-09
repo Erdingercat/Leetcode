@@ -1,0 +1,53 @@
+/**
+ * Definition for an interval.
+ * struct Interval {
+ *     int start;
+ *     int end;
+ *     Interval() : start(0), end(0) {}
+ *     Interval(int s, int e) : start(s), end(e) {}
+ * };
+ */
+using namespace std;
+ 
+ 
+
+
+class Solution {
+public:
+
+    static bool rangeSort(const Interval& I1, const Interval& I2){
+        return I1.start < I2.start;
+//        return false;
+    }
+
+    vector<Interval> merge(vector<Interval> &intervals) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+
+        vector<Interval> res;
+        
+        if(intervals.size() == 0){
+            return res;
+        }
+        
+        stable_sort(intervals.begin(), intervals.end(), Solution::rangeSort);
+        
+        vector<Interval>::iterator it = intervals.begin();
+        Interval curr = *it;
+        it++;
+        while(it < intervals.end()){
+            if(it->start <= curr.end){
+                curr.end = max( curr.end, it->end);
+                
+            }else{
+                res.push_back(curr);
+                curr = *it;
+            }
+            it++;
+        }
+        res.push_back(curr);
+        
+        return res;
+    }    
+
+};

@@ -1,0 +1,35 @@
+class Solution {
+public:
+    bool isValid(string s) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        
+        stack<int> valid;
+        
+        string::iterator it;
+        
+        for(it = s.begin(); it < s.end(); it ++){
+            char c = (*it);
+            
+            if(c == '(' || c == '[' || c == '{'){
+                valid.push(c);
+            }else if (c == ')'){
+                if(valid.empty() || valid.top() != '('){
+                    return false;
+                }
+                valid.pop();
+            }else if (c == ']'){
+                if(valid.empty() || valid.top() != '['){
+                    return false;
+                }
+                valid.pop();
+            }else if (c == '}'){
+                if(valid.empty() || valid.top() != '{'){
+                    return false;
+                }
+                valid.pop();
+            }
+        }
+        return valid.empty();
+    }
+};

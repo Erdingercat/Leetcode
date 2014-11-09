@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<int> getRow(int rowIndex) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        vector<int> res;
+        
+        if(rowIndex >= 0){
+            res.push_back(1);
+        }
+        
+        for(int i = 1; i <= rowIndex; i++){
+            int last = res[i-1];
+            
+            res.push_back(last);
+            
+            for(int j = i-1; j > 0; j--){
+                res[j] += res[j-1];
+            }
+        }
+        return res;
+    }
+};

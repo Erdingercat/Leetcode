@@ -1,0 +1,57 @@
+#include <sort.h>
+#using namespace std;
+
+class Solution {
+public:
+    vector<vector<int> > fourSum(vector<int> &num, int target) {
+
+        vector<vector<int> > resSet;
+        std::sort(num.begin(), num.end()); //sort input sequence by accending order
+        
+        int numSize = num.size();
+        
+        for(int i = 0; i < numSize; i++){ //1st index
+            while(i != 0 && num[i] == num[i-1]){ //prevent duplicate answer
+                i++;
+            }
+            
+            int value1 = num[i];
+            
+            for(int j = i+1; j < numSize; j++){//2nd idx
+                while(j != i+1 && num[j] == num[j-1]){//prevent duplicate answer
+                    j++;
+                }
+                
+                int value2 = num[j];
+                
+                int m = j+1, n = numSize-1; //3rd and 4th index
+                
+                while(m < n){ //ssearch from two ends to the center
+                    int value3 = num[m];
+                    int value4 = num[n];
+                    
+                    int sum4 = value1 + value2 + value3 + value4;
+                    if(sum4 == target){  //answer found
+                        
+                        vector<int> res;
+                        res.push_back(value1);
+                        res.push_back(value2);
+                        res.push_back(value3);
+                        res.push_back(value4);
+                        resSet.push_back(res);
+                    
+                    
+                        do{m++;} while (num[m] == num[m-1] && m < n); //prevent duplicate answer
+                        do{n--;} while (num[n] == num[n+1] && n < m); //prevent duplicate answer
+                            
+                    }else if (num[i] + num[j] + num[m] + num[n] < target){
+                        m++;
+                    }else{
+                        n--;
+                    }
+                }
+            } 
+        }
+        return resSet; // return answer
+    }
+};

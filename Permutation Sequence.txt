@@ -1,0 +1,50 @@
+class Solution {
+public:
+    string getPermutation(int n, int k) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        
+        vector<int> nums;
+        for(int i = 0; i < n; i++){
+            nums.push_back(i+1);
+        }
+        
+        return getPermutation(nums, k-1);
+        
+
+        
+        
+    }
+    
+    string getPermutation(vector<int> nums, int k){
+        
+        string res;
+        
+        int len = nums.size();
+        int p = 1;
+        int i = 1;
+        
+        while(i < len){
+            p *= i;
+            i++;
+        }
+        
+        int idx = k/p;
+        int next_pos = k%p;
+        
+        
+        stringstream ss;
+        ss << nums[idx];
+
+        res += ss.str();
+        
+        nums.erase(nums.begin()+idx);
+        
+        if(!nums.empty()){
+            res += getPermutation(nums, next_pos);
+        }
+        
+        return res;
+        
+    }
+};

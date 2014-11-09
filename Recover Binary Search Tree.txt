@@ -1,0 +1,72 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<TreeNode *> inorder;
+    
+    void inorderTraverse (TreeNode* root)
+    {
+        if(!root) 
+            return;
+            
+        inorderTraverse(root -> left );
+        inorder.push_back(root);
+        inorderTraverse(root -> right);
+    }
+    
+    void recoverTree(TreeNode *root) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+
+        inorder.clear();
+        inorderTraverse(root);
+        
+        TreeNode *l = NULL , *r = NULL;
+        
+        /*for(int i = 0; i < inorder.size() -1; i++)
+        {
+            if( inorder[i]->val  > inorder[i+1]->val)
+            {
+                l = inorder[i];
+                break;
+            }
+        }
+        for(int i = inorder.size() -1; i > 0; i--)
+        {
+            if( inorder[i]->val < inorder[i-1]->val)
+            {
+                r = inorder[i];
+                break;
+            }
+        }*/
+        
+        vector<TreeNode*>::iterator it;
+        for(it = inorder.begin(); it < inorder.end()-1; it++)
+        {
+            if( (*it)->val  > (*(it+1))->val )
+            {
+                l = *it;
+                break;
+            }
+        }
+        for(it = inorder.end()-1; it > inorder.begin(); it--)
+        {
+            if( (*it)->val < (*(it-1))->val)
+            {
+                r = *it;
+                break;
+            }
+        }
+         
+        int tmp = l->val;
+        l->val = r->val;
+        r->val = tmp;
+    }
+};

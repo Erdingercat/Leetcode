@@ -1,0 +1,56 @@
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int> > &matrix) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() functio
+        
+        vector<int> res;
+        
+        int m = matrix.size();
+        if(m <= 0 ){
+            return res;
+        }
+        int n = matrix[0].size();
+        if(n <= 0){
+            return res;
+        }
+        
+        bool dir = true;
+        while(m > 0 && n > 0){
+            vector<vector<int> >::iterator it;
+            vector<int>::iterator it2;
+            
+            
+            if(dir){
+                
+                for(it2 = (*matrix.begin()).begin(); it2 < (*matrix.begin()).end(); it2++){
+                    res.push_back(*it2);
+                }
+                matrix.erase(matrix.begin());
+                
+                for(it = matrix.begin(); it < matrix.end(); it++){
+                    res.push_back(*((*it).end()-1));
+                    (*it).erase( (*it).end() - 1);
+                }
+            }else{
+                
+                for(it2 = (*(matrix.end()-1)).end()-1; it2 >= (*(matrix.end()-1)).begin(); it2--){
+                    res.push_back(*it2);
+                }
+                matrix.erase(matrix.end() - 1);
+                
+                for(it = matrix.end()-1; it >= matrix.begin(); it--){
+                    res.push_back(*((*it).begin()));
+                    (*it).erase( (*it).begin());
+                }
+            }
+        
+        
+            m--; 
+            n--;
+            
+            dir = !dir;
+        }
+        return res;
+    }
+};

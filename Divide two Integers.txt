@@ -1,0 +1,82 @@
+class Solution {
+public:
+    int divide(int dividend, int divisor) {
+        
+        bool neg_dividend = dividend < 0;
+        bool neg_divisor = divisor < 0;
+         
+        unsigned int u_dividend;
+        unsigned int u_divisor;
+         
+         
+        //if dividend is negative, turn it into positive;
+        if (dividend < 0){
+            u_dividend = (unsigned int)(dividend ^ -1) + 1;            
+        }
+        else
+            u_dividend = dividend;
+        
+        //if diisor is negative, turn it into positive;
+        if (divisor < 0){
+            u_divisor = (unsigned int)(divisor ^ -1) + 1;
+        }
+        else
+            u_divisor = divisor;
+      
+        // divide two possible integers
+        int result = divide( u_dividend, u_divisor);
+         
+         
+        // turn result into negative if needed;
+        if ( neg_dividend ^ neg_divisor)
+            result =  (result ^ -1) + 1;
+     
+        return result; 
+    }
+    
+    
+    //All input are non-negative intgers
+    unsigned divide(unsigned dividend, unsigned divisor){
+        
+        if(dividend < divisor){
+            return 0;
+        }else if (dividend == divisor){
+            return 1;
+        }
+        
+        
+        unsigned ans = 0;
+        //unsigned currDividend = dividend;
+        //unsigned currDivisor = divisor;
+        
+        int bit_cnt = 0; //record # of bits the divisor needs to move to match the dividend;
+        
+        
+        //calculate the match position
+        while(dividend > (divisor << bit_cnt)){
+            //currDivisor <<= 1;
+            bit_cnt++;
+        }
+        //currDivisor >>= 1;
+        bit_cnt --;
+        
+        
+        
+        //Can't use loop!! move through each bit, so it's slow!!
+        /*while(currDividend >= currDivisor){
+            ans <<= 1;
+            if(currDividend >= currDivisor){
+                currDividend -= currDivisor;
+                ans += 1;
+            }
+            
+            currDivisor >>= 1;
+        }*/
+        
+        
+        //recursive
+        ans = divide(dividend - (divisor << bit_cnt), divisor)+( 1 << bit_cnt) ;
+        return ans;
+        
+    }
+};

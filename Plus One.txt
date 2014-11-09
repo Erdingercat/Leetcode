@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<int> plusOne(vector<int> &digits) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        
+        int len = digits.size();
+        int idx = len -1;
+        
+        while(idx >= 0){
+            
+            if (digits[idx] < 9){
+                digits[idx]++;
+                break;
+            }
+            else{
+                digits[idx] = 0;
+                idx --;
+            } 
+        }
+        if( idx < 0){
+            digits.insert( digits.begin(), 1);
+        }
+        return digits;
+    }
+};

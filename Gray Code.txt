@@ -1,0 +1,31 @@
+class Solution {
+public:
+    vector<int> grayCode(int n) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        
+        vector<int> res;
+        //stop condition
+        if(n == 0){
+            res.push_back(0);
+            return res;
+        }else if(n ==1){
+            res.push_back(0);
+            res.push_back(1);
+            return res;
+        }
+        
+        //recursive
+        res = grayCode(n-1);
+        
+        vector<int> revRes(res.rbegin(), res.rend());
+        for(vector<int>::iterator it = revRes.begin(); it < revRes.end(); it++){
+            *it += pow(2, n-1);
+        }
+        res.insert(res.end(), revRes.begin(), revRes.end());
+        
+        
+        return res;
+        
+    }
+};

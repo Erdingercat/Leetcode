@@ -1,0 +1,82 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *reverseKGroup(ListNode *head, int k) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        
+        ListNode *new_head = head;
+        bool first = true; // only update the new header for the first time;
+        
+        ListNode *prev, *curr, *post, *begin, *end;
+        
+        // used to reverse links
+        prev = NULL;
+        post = NULL;
+        curr = head;
+        
+        
+        // begin: beginning of current group
+        // end: end of previous group.
+        begin = head;
+        end = NULL;
+        
+        if(curr != NULL){
+            post = curr->next;
+        }
+        
+        
+        while(1){
+            
+            // Check if there's enough elements for a group
+            bool flag = true;
+            ListNode *check = begin;
+            for(int i = 0; i < k; i++){
+                if(check == NULL){
+                    flag = false;
+                    break;
+                }
+                check = check->next;
+            }
+            if(!flag){  // No enough elements, do nothing.
+                if(end != NULL)
+                    end->next = begin;
+                break;
+            }
+            
+            // reverse current group.
+            prev = NULL;
+            int cnt = 0;
+            while(cnt < k && curr != NULL){
+                curr->next = prev;
+                prev = curr;
+                curr = post;
+                if(post != NULL){
+                    post = post->next;
+                }
+                cnt++;
+            }
+            
+           
+            // For first round, need to update the new header;
+            if(first){
+                new_head = prev;
+                first = false;
+            }
+            else{  // not first round : need to connect to previous group.
+                end->next = prev;
+            }
+            
+            end = begin;
+            begin = curr;
+        }
+        return new_head;
+    }
+};

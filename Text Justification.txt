@@ -1,0 +1,73 @@
+class Solution {
+public:
+    vector<string> fullJustify(vector<string> &words, int L) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        
+        int n = words.size();
+        int begin = 0;
+        int end = begin;
+        
+        vector<string> res;
+        
+        
+        while(end < n){
+            int group_len = words[begin].size();
+            int group_size = 1; 
+            string group;
+            
+            while(end < n && group_len <= L){
+                end++;
+                
+                if(end == n){
+                    break;
+                }
+                group_len += (1+words[end].size());
+            }
+            group_size = end-begin;
+            
+            
+            if(end != n){ // Adding words[end] is too much, update to real group len.
+                group_len -= (1+words[end].size());
+            }
+            
+            if( end == n || group_size == 1){ // don't need to re-calculate the space size
+                for(int i = 0; i < end - begin -1; i++){
+                    group +=  words[begin + i] + " ";
+                }
+                group += words[end-1];
+                group += string(L - group_len , ' ');
+                
+                res.push_back(group);
+                begin = end;
+                continue;
+            }
+            
+            // calculate how many spaces are needed between words.
+            int space_len = group_size == 1?0:(L - group_len) / (group_size -1);
+            int one_more = group_size == 1?0:(L - group_len) % (group_size -1); // first several interval may need one more space.
+            
+            string space = string(space_len+1 , ' ');
+            for(int i = 0; i < one_more; i++){
+                group += words[begin + i];
+                group += space + " ";
+            }
+            for(int i = one_more; i < group_size-1; i++ ){
+                group += words[begin + i];
+                group += space;
+            }
+            group += words[end-1];
+            res.push_back(group);
+            begin = end;
+        }
+        
+        return res;
+        
+    }
+};
+
+
+
+
+
+

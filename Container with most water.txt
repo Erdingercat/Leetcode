@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int maxArea(vector<int> &height) {
+        int max_Area = 0; //record max area until current search;
+        
+        vector<int>::iterator l, r;
+        l = height.begin();
+        r = height.end()-1;
+        
+        while(r > l){
+            int width = r-l;
+            int currArea;
+            
+            if(*l < *r){
+                currArea = *l * width;
+                l++;
+            }else{
+                currArea = *r * width;
+                r--;
+            }
+            max_Area = max(currArea, max_Area);
+        }
+        return max_Area;
+    }
+};

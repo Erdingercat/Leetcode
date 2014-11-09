@@ -1,0 +1,24 @@
+class Solution {
+public:
+    void sortColors(int A[], int n) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        
+        int idx = 0, l = 0, r = n-1;
+        
+        while( l < r && idx <= r){
+            
+            if(A[idx] == 0){
+                // Since we search from left to right, there's no "2" at left of l
+		// A[idx] should be at at most 1 and is done.
+                A[idx++] = A[l];
+                A[l++] = 0;
+            }else if(A[idx] == 2){
+                A[idx] = A[r];
+                A[r--] = 2;
+            }else{
+                idx++;
+            }
+        } 
+    }
+};

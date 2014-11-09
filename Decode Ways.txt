@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int numDecodings(string s) {
+        
+        if(s.length() <=0){
+            return 0;
+        }
+        
+        
+        int idx_minus_2 = 1; // to record # of ways untill i-2
+        int idx_minus_1 = (s[0] >= '1' && s[1] <= '9')?1:0; // to record # of ways utill i-1
+        
+        string::iterator it;
+        
+        
+        for(it = s.begin()+1; it < s.end(); it++){
+            
+            int num = 0;  //to record # of ways until i;
+            
+            // if i-1 and i can consider together
+            if( (*(it-1) == '1' && *it >= '0' && *it <= '9')
+            ||  *(it-1) == '2' && *it >= '0' && *it <= '6' ){
+                num += idx_minus_2;
+            }
+            
+            // if i itself can consider as a separate code
+            if( *it >= '1' && *it <= '9' ){
+                num += idx_minus_1;
+            }
+
+            //update information, move i to next position;
+            idx_minus_2 = idx_minus_1;
+            idx_minus_1 = num;
+        }
+        return idx_minus_1;
+    }
+};

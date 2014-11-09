@@ -1,0 +1,29 @@
+class Solution {
+public:
+    void rotate(vector<vector<int> > &matrix) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        int len = matrix.size();
+        rotateSubSqr(matrix, 0, len-1);
+        
+    }
+    
+    void rotateSubSqr(vector<vector<int> > &matrix, int from, int to){
+        if(from >= to){
+            return;
+        }
+        
+        // Rotate the edge
+        for(int shift = 0; shift < to-from; shift++){
+            int tmp = matrix[ from ][ from + shift ];
+            matrix[ from ][ from + shift ]  = matrix[ to-shift ][ from ];
+            matrix[ to-shift ][ from ]      = matrix [ to ][ to-shift ];
+            matrix[ to ][ to-shift ]        = matrix [ from + shift ][ to ];
+            matrix[ from + shift ][ to ]    = tmp;
+            
+        }
+        
+        // Rotate inner square;
+        rotateSubSqr(matrix, from+1, to-1);
+    }
+};

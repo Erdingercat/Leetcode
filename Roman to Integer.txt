@@ -1,0 +1,45 @@
+class Solution {
+public:
+
+    int charToInt(char c){    
+        switch(c){
+            case 'I':
+                return 1;
+            case 'V':
+                return 5;
+            case 'X':
+                return 10;       
+            case 'L':
+                return 50;
+            case 'C':
+                return 100;
+            case 'D':
+                return 500;
+            case 'M':
+                return 1000;
+            default:
+                return INT_MIN;
+                break;
+        }
+    }
+    
+    int romanToInt(string s) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        
+        if(s.length() == 0){
+            return 0;
+        }else if (s.length()==1){
+            return charToInt( s[0] );
+        }
+        
+        int lft = charToInt( s[0] );
+        int rht = charToInt( s[1] );
+        
+        if(lft >= rht){
+            return lft + romanToInt(s.substr(1));
+        }else{
+            return rht - lft + romanToInt(s.substr(2));
+        }
+    }
+};

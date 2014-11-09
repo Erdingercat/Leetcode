@@ -1,0 +1,42 @@
+class Solution {
+public:
+    string longestCommonPrefix(vector<string> &strs) {
+        
+        
+        bool flag = true;
+        int idx = 0;
+        string res;
+        
+        
+        if(strs.size() == 0){
+            return res;
+        }
+        
+        
+        string first = strs[0];
+        
+        if(first.size() ==0){
+            return res;
+        }
+        
+        
+        while(idx < first.size() && flag){    
+            char c = first[idx];
+            
+            for(vector<string>::iterator it = strs.begin(); it < strs.end(); it++){
+                string curr = *it;
+                if( curr.size() < idx || curr[idx] != c){
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag == false){
+                break;
+            }
+            
+            res = res + c;
+            idx ++;
+        }
+        return res;
+    }
+};

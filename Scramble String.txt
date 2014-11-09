@@ -1,0 +1,42 @@
+class Solution {
+public:
+    bool isScramble(string s1, string s2) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        
+        int n = s1.length();
+        
+        if(n == 1){
+            return s1 == s2;
+        }else if (n ==0){
+            return true;
+        }
+        
+        
+        
+        for(int i = 1; i <= n/2; i++){
+            string s1_l1 = s1.substr(0,i);
+            string s1_r1 = s1.substr(i);
+            string s1_l2 = s1.substr(0,n-i);
+            string s1_r2 = s1.substr(n-i);
+            
+            
+            
+            string s2_l1 = s2.substr(0, i);
+            string s2_r1 = s2.substr(i);
+            string s2_l2 = s2.substr(0, n-i);
+            string s2_r2 = s2.substr(n-i);
+            
+            if( 
+                ( isScramble(s1_l1, s2_l1) && isScramble(s1_r1, s2_r1) ) 
+                || (isScramble(s1_l1, s2_r2) && isScramble(s1_r1, s2_l2) )
+                // Remember: need to check shorter part first.
+                || (isScramble(s1_r2, s2_l1) && isScramble(s1_l2, s2_r1) )
+                || (isScramble(s1_r2, s2_r2) && isScramble(s1_l2, s2_l2) )
+                ){
+                return true;
+            }
+        }
+        return false;
+    }
+};
