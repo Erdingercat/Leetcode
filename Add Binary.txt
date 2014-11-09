@@ -1,3 +1,12 @@
+
+Given two binary strings, return their sum (also a binary string).
+
+For example,
+a = "11"
+b = "1"
+Return "100".
+
+
 class Solution {
 public:
     string addBinary(string a, string b) {
@@ -34,4 +43,43 @@ public:
             }
         }
     }
+};
+
+
+
+class Solution {
+public:
+    string addBinary(string a, string b) {
+        string res;
+        
+        int aIdx = a.size()-1;
+        int bIdx = b.size()-1;
+        bool f = 0;
+        
+        while(aIdx >= 0 || bIdx >= 0){
+            char achar = (aIdx >=0)?a[aIdx]:'0';
+            char bchar = (bIdx >=0)?b[bIdx]:'0';
+            char bit = check(achar, bchar, f);
+            res = bit+ res;
+            aIdx --;
+            bIdx --;
+        }
+        if(f) res = '1'+res;
+        return res;
+        
+    }
+    
+    char check(char a, char b, bool& flag){
+        //bool tmp = flag;
+        char res;
+    
+        if (a != b){
+            res = flag?'0':'1';
+        }else{
+            
+            res = flag?'1':'0';
+            flag = (a == '0')?0:1;
+        }
+        return res;
+    }
 };
