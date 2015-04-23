@@ -1,43 +1,48 @@
+Given a collection of candidate numbers (C) and a target number (T), find all unique combinations in C where the candidate numbers sums to T.
+
+Each number in C may only be used once in the combination.
+
+Note:
+All numbers (including target) will be positive integers.
+Elements in a combination (a1, a2, … , ak) must be in non-descending order. (ie, a1 ≤ a2 ≤ … ≤ ak).
+The solution set must not contain duplicate combinations.
+For example, given candidate set 10,1,2,7,6,1,5 and target 8, 
+A solution set is: 
+[1, 7] 
+[1, 2, 5] 
+[2, 6] 
+[1, 1, 6] 
+
+
 class Solution {
 public:
-    vector<vector<int> > combinationSum2(vector<int> &num, int target) {
-        
-        stable_sort(num.begin(), num.end());
-        
-        vector<vector<int> > resSet; //result for return;
-        int prev = 0;
-        
-        vector<int>::iterator it;
-        for(it = num.begin(); it < num.end(); it++){
+    vector<vector<int> > combinationSum2(vector<int> &num, int begin, int end, int target){
+        vector<vector<int> > res;
+
+        for(int i = end; i >= begin; i--){
             
-            //prevent duplication
-            if(*it == prev){
+            int val_i = num[i];
+            if(val_i > target || (i < end && val_i == num[i+1])) continue;
+            
+            if(val_i == target){
+                res.push_back(vector<int>(1, target));
                 continue;
             }
             
-            //end condition
-            if (*it > target){
-                break;
-            }else if(*it == target){
-                vector<int> findMatch;
-                findMatch.push_back(*it);
-                resSet.push_back(findMatch);
-                break;
+            int curr_tar = target - val_i;
+            vector<vector<int> > subres = combinationSum2(num, begin, i-1, curr_tar);
+            for(int j = 0; j < subres.size();j++){
+                subres[j].push_back(val_i);
             }
-            
-            
-            //recursive
-            vector<int> subNum(it+1, num.end());
-            vector<vector<int> > subRes = combinationSum2(subNum, target - *it);
-            
-            vector<vector<int> >::iterator itRes;
-            for(itRes = subRes.begin(); itRes < subRes.end(); itRes++){
-                itRes->insert(itRes->begin(), *it);
-            }
-            resSet.insert(resSet.end(), subRes.begin(), subRes.end());
-            
-            prev = *it;
+            res.insert(res.begin(), subres.begin(), subres.end());
         }
-        return resSet;
+        return res;
+    }
+
+    vector<vector<int> > combinationSum2(vector<int> &num, int target) {
+        vector<vector<int> > res;
+        sort(num.begin(), num.end());
+        res = combinationSum2(num, 0, num.size()-1, target);
+        return res;
     }
 };

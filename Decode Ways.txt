@@ -1,37 +1,43 @@
+ message containing letters from A-Z is being encoded to numbers using the following mapping:
+
+'A' -> 1
+'B' -> 2
+...
+'Z' -> 26
+Given an encoded message containing digits, determine the total number of ways to decode it.
+
+For example,
+Given encoded message "12", it could be decoded as "AB" (1 2) or "L" (12).
+
+The number of ways decoding "12" is 2.
+
+
+
 class Solution {
 public:
     int numDecodings(string s) {
+        int n = s.length();
         
-        if(s.length() <=0){
-            return 0;
-        }
+        if( n == 0 || s[0] == '0') return 0;
         
+        vector<int> num(n,0);
         
-        int idx_minus_2 = 1; // to record # of ways untill i-2
-        int idx_minus_1 = (s[0] >= '1' && s[1] <= '9')?1:0; // to record # of ways utill i-1
+        num[0] = 1;
+        if(n == 1) return num[0];
         
-        string::iterator it;
+        /*num[1] = ( s[0] == '1'  ||  (s[0] == '2' && s[1] <= '6')) + (s[1] != '0');
+        if(n == 2) return num[1];*/
         
-        
-        for(it = s.begin()+1; it < s.end(); it++){
-            
-            int num = 0;  //to record # of ways until i;
-            
-            // if i-1 and i can consider together
-            if( (*(it-1) == '1' && *it >= '0' && *it <= '9')
-            ||  *(it-1) == '2' && *it >= '0' && *it <= '6' ){
-                num += idx_minus_2;
+        for(int i = 1; i < n; i++){
+            num[i] == 0;
+    
+            if(s[i] != '0'){
+                num[i] += num[i-1];
             }
+            if(s[i-1] == '1'  ||  (s[i-1] == '2' && s[i] <= '6'))
+                num[i] += i>1?num[i-2]:1;
             
-            // if i itself can consider as a separate code
-            if( *it >= '1' && *it <= '9' ){
-                num += idx_minus_1;
-            }
-
-            //update information, move i to next position;
-            idx_minus_2 = idx_minus_1;
-            idx_minus_1 = num;
         }
-        return idx_minus_1;
+        return num[n-1];
     }
 };

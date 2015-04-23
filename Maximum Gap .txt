@@ -1,0 +1,61 @@
+Given an unsorted array, find the maximum difference between the successive elements in its sorted form.
+
+Try to solve it in linear time/space.
+
+Return 0 if the array contains less than 2 elements.
+
+You may assume all elements in the array are non-negative integers and fit in the 32-bit signed integer range.
+
+
+class Solution {
+public:
+
+	// bin search
+    int maximumGap(vector<int> &num) {
+        
+        int n = num.size();
+        if(n < 2) return 0;
+        
+        int min_val = num[0];
+        int max_val = num[0];
+        
+        // get the boundary values in num;
+        for(int i = 1; i < n; i++){
+            min_val = min(num[i], min_val);
+            max_val = max(num[i], max_val);
+        }
+        
+        int bucket_size = (max_val - min_val) / (n-1);  //what if bucket size < 1 ?
+        if(bucket_size < 1) bucket_size = 1;
+
+        // consider the case max_val- min_val  = 400;
+        // n = 68
+        // bucket_size = 5;
+        // bucket_num = 400/5 + 1 = 80 > 68+1        
+        int bucket_num= (max_val - min_val)/bucket_size + 1;
+        
+        vector<int> bucket_max (bucket_num, INT_MIN);
+        vector<int> bucket_min (bucket_num, INT_MAX);
+        
+        for(int i = 0; i < n; i++){
+            int val = num[i];
+            int bucket_idx = (val - min_val) / bucket_size;
+            
+            bucket_min[bucket_idx] = min( val, bucket_min[bucket_idx]);
+            bucket_max[bucket_idx] = max( val, bucket_max[bucket_idx]);
+        }
+        
+        
+        int max_gap = INT_MIN;
+        int prev_max = min_val;
+        
+        
+        for(int i = 0; i < bucket_num; i++){
+            if(bucket_min[i] > bucket_max[i]) continue; // not a valid bucket, don't need to consider
+            
+            max_gap = max(max_gap,  bucket_min[i] - prev_max);
+            prev_max = bucket_max[i];
+        }
+        return max_gap;
+    }
+};

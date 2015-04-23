@@ -1,50 +1,46 @@
+Follow up for N-Queens problem.
+
+Now, instead outputting board configurations, return the total number of distinct solutions.
+
+
+
 class Solution {
 public:
-    int totalNQueens(int n) {
-        // Start typing your C/C++ solution below
-        // DO NOT write int main() function
-        
-        int resNum = 0;
-        vector<int> pos; // 0: put queen, 1: valid;, -1: not valid
-        
-        for(int i = 0; i < n; i++){
-            pos.push_back(0);
-        }
-        
-        // one queen on each row, start from the first row. 
-        put ( resNum, pos, n, 0);
-        return resNum;
-    }
+
+    // Recursively solving the queen2
     
-    
-    void put (int &resNum, vector<int > pos, int n, int row){
+    int totalNQueens(int n, vector<int> pos, int row){
+        // Give previous row of the grid, put the queen at current "row" row. 
         
-        for(int i = 0; i < n; i++){
-            
-            bool flag = true;
-            
-            for(int j = row-1; j >= 0; j--){
-                int pos_j = pos[j]; 
-                if( pos_j == i
-                || i - row == pos_j - j
-                || i + row == pos_j + j){
-                    flag = false;
+        int num = 0;
+        if (row == n) return 1;  // Already put all n  queens, a valid solution found.
+        
+        // otherwise check each possible column against previous queens
+        for(int v = 0; v < n; v++){
+            bool valid = 1;
+            for(int i = 0; i < row; i++ ){
+                int pos_i = pos[i];
+                if( pos_i ==  v || (i + pos_i == row + v) || (i - pos_i == row - v)) {
+                    valid = 0;
                     break;
                 }
             }
+            if(!valid) continue;   // cannot find valid solution by putting queen at v column
             
-            if (!flag)
-                continue;
-            
-                                
-            pos[row] = i; 
-            
-            if(row == n-1){
-                resNum++;
-                continue;
-            }
-            
-            put(resNum, pos, n,row + 1);
-        }   
+            pos[row] = v;
+            // check if put queen at v, how many solutions is possible for the rest rows.
+            int numAfter = totalNQueens(n, pos, row + 1); 
+            num += numAfter;
+        }
+        return num;
+    }
+    
+    
+    int totalNQueens(int n) {
+        vector<int> pos(n, -1);   // pos[i] : which column we put the queen at row i
+        return totalNQueens(n, pos, 0);
     }
 };
+
+
+

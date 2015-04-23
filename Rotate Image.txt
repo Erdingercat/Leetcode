@@ -1,29 +1,26 @@
+You are given an n x n 2D matrix representing an image.
+
+Rotate the image by 90 degrees (clockwise).
+
+Follow up:
+Could you do this in-place?
+
+
+
 class Solution {
 public:
     void rotate(vector<vector<int> > &matrix) {
-        // Start typing your C/C++ solution below
-        // DO NOT write int main() function
-        int len = matrix.size();
-        rotateSubSqr(matrix, 0, len-1);
-        
-    }
-    
-    void rotateSubSqr(vector<vector<int> > &matrix, int from, int to){
-        if(from >= to){
-            return;
+        int i = 0, j = matrix.size()-1;
+        while(j-i >= 1){
+            for(int k = 0; k < j-i; k++){
+                int tmp = matrix[i][i+k];
+                matrix[i][i+k] = matrix[j-k][i];
+                matrix[j-k][i] = matrix[j][j-k];
+                matrix[j][j-k] = matrix[i+k][j];
+                matrix[i+k][j] = tmp;
+            }
+            i++;
+            j--;
         }
-        
-        // Rotate the edge
-        for(int shift = 0; shift < to-from; shift++){
-            int tmp = matrix[ from ][ from + shift ];
-            matrix[ from ][ from + shift ]  = matrix[ to-shift ][ from ];
-            matrix[ to-shift ][ from ]      = matrix [ to ][ to-shift ];
-            matrix[ to ][ to-shift ]        = matrix [ from + shift ][ to ];
-            matrix[ from + shift ][ to ]    = tmp;
-            
-        }
-        
-        // Rotate inner square;
-        rotateSubSqr(matrix, from+1, to-1);
     }
 };

@@ -1,50 +1,42 @@
+Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+
+For example, given n = 3, a solution set is:
+
+"((()))", "(()())", "(())()", "()(())", "()()()"
+
 class Solution {
 public:
     vector<string> generateParenthesis(int n) {
-        vector<string> resSet; //result for return;
         
-        //stop condition
+        vector<string> res;
         if(n == 0){
-            return resSet;
-        } else if (n == 1){
-            resSet.push_back("()");
+            return res;
+        }if(n == 1){
+            res.push_back("()");
+            return res;
         }
         
-        
-        //recursive:
-        vector<string> subRes = generateParenthesis(n-1);
-        vector<string>::iterator it;
-        
-        
-        for(it = subRes.begin(); it < subRes.end(); it++){
-            
+        vector<string> prev = generateParenthesis(n-1);
+        for(vector<string>::iterator it = prev.begin(); it != prev.end(); it++){
             string curr = *it;
-            int strLen = curr.length();
-            int cntLeft = 0;
-            int cntRight = 0;
+            curr.insert(0, "(");
             
-            
-            //place the nth "(" at the begining.
-            //check where is valid to put nth ")".
-            for(int i = 0; i < strLen; i++){
-                if ( cntLeft == cntRight){  //valid position.
-                    string newStr(curr);
-                    newStr.insert(newStr.begin()+i, ')');
-                    newStr.insert(newStr.begin(), '('); //start with the nth "("
-                    resSet.push_back(newStr);
-                }
-                                
-                //used for validation.
-                if (curr[i] == '('){
-                    cntLeft++;
+            int len = curr.length();
+            int cnt = 0;
+            for(int i = 0; i < len; i++){
+                string tmp = curr;
+                if(tmp[i] == '(' ){
+                    cnt++;
                 }else{
-                    cntRight++;
+                    cnt--;
+                }
+                
+                if(cnt == 1){
+                    tmp.insert(i+1, ")");
+                    res.push_back(tmp);
                 }
             }
-            
-            //don't forget the last position.
-            resSet.push_back("("+curr + ")");
         }
-        return resSet;
+        return res;
     }
 };

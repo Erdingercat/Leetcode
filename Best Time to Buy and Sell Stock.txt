@@ -1,0 +1,35 @@
+ 
+Say you have an array for which the ith element is the price of a given stock on day i.
+
+If you were only permitted to complete at most one transaction (ie, buy one and sell one share of the stock), design an algorithm to find the maximum profit.
+
+
+
+class Solution {
+public:
+    int maxProfit(vector<int> &prices) {
+        int maxProfit = 0;
+        if(prices.empty()){
+            return maxProfit;
+        }
+        
+        int prev = prices[0];
+        int n = prices.size();
+        
+        int localMin = prices[0];
+        int localMax = prices[0];
+        
+        for(int i = 0; i<n; i ++){
+            int curr = prices[i];
+            if( (i == n-1  || curr < prices[i+1]) &&  curr <= prev){  // find a local minimum
+                localMin = min(localMin, curr);
+            }
+            if( (i == n-1  || curr > prices[i+1]) &&  curr >= prev){  // find a local maximum : check the best profit
+                localMax = curr;
+                maxProfit = max(maxProfit, localMax - localMin);
+            }
+            prev = curr;
+        }
+        return maxProfit;
+    }
+};

@@ -1,11 +1,14 @@
+Given an array of integers, every element appears twice except for one. Find that single one. 
+
+ 
  
 class Solution {
 public:
-    int singleNumber(int A[], int n) {
+    int singleNumber(vector<int>& nums) {
+        int n = nums.size();
         int singleNum = 0;
-        for(int i = 0; i < n; i++){
-            singleNum = singleNum ^ A[i];
-        }
+        while(n-- > 0)
+            singleNum ^= nums[n];
         return singleNum;
     }
 };

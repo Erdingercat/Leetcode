@@ -1,0 +1,81 @@
+Given an array where elements are sorted in ascending order, convert it to a height balanced BST.
+
+
+
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+
+    TreeNode *sortedArrayToBST(vector<int> &num, int l, int r) {
+        if(l > r) return NULL;
+        int mid = (l + r)/2;
+        
+        TreeNode* root = new TreeNode(num[mid]);
+        TreeNode* LTree = sortedArrayToBST(num, l, mid-1);
+        TreeNode* RTree = sortedArrayToBST(num, mid+1, r);
+        
+        root->left = LTree;
+        root->right = RTree;
+        return root;
+    }
+            
+    TreeNode *sortedArrayToBST(vector<int> &num) {
+        int n = num.size();
+        return sortedArrayToBST(num,0,n-1);
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode *sortedArrayToBST(vector<int> &num) {
+        if(num.empty()){
+            return NULL;
+        }
+        
+        int mid = num.size()/2;
+        TreeNode* root = new TreeNode(num[mid]);
+        
+        vector<int> L(num.begin(), num.begin()+mid);
+        vector<int> R(num.begin()+mid+1, num.end());
+        
+        TreeNode* LTree = sortedArrayToBST(L);
+        TreeNode* RTree = sortedArrayToBST(R);
+        
+        root->left = LTree;
+        root->right = RTree;
+        return root;
+    }
+};

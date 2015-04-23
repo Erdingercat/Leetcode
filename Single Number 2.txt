@@ -1,0 +1,26 @@
+Given an array of integers, every element appears three times except for one. Find that single one.
+
+Note:
+Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+
+
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int n = nums.size();
+        int prevOnes = 0, prevTwos = 0, prevZeros = ~(prevOnes|prevTwos);
+        int ones, twos, zeros;
+        
+        for(int i = 0; i < n ; i++){
+            int curr = nums[i];
+            zeros = (prevZeros & ~curr) | (prevTwos & curr);
+            ones = (prevOnes & ~curr) | (prevZeros & curr);
+            twos = (prevTwos & ~curr) | (prevOnes & curr);
+            
+            prevZeros = zeros;
+            prevOnes = ones;
+            prevTwos = twos;
+        }
+        return ones;
+    }
+};

@@ -1,49 +1,36 @@
+Given an integer, convert it to a roman numeral.
+
+Input is guaranteed to be within the range from 1 to 3999.
+
+
 class Solution {
 public:
     string intToRoman(int num) {
+        char mapping[7] = { 'I', 'V', 'X', 'L', 'C', 'D', 'M'};
+        string str = "";
         
-        string res = "";
+        int mapIdx = 0;
+        int digit;
         
-        int baseNum[7] = {1,5,10, 50, 100, 500, 1000};
-        string baseChar[7] = {"I", "V", "X", "L", "C", "D", "M"};
-    
-        
-        
-        // need to handle each bit separately
-        //thousand
-        res += printStr((num/1000) % 10, "", "", "M");
-        //hundred
-        res += printStr((num/100) % 10, "M", "D", "C");
-        //ten
-        res += printStr((num/10) % 10, "C", "L", "X");
-        //one
-        res += printStr(num%10, "X", "V", "I");
-        
-        
-        return res;
-    }
-    
-    
-    
-    string printStr(int value, string ten, string five, string one){
-
-        assert(value <10  &&  value >=0);
-        
-        string res= "";
-        
-        if(value == 0){
-            return res;
+        while(num > 0){
+            digit = num % 10;
+            num /= 10;
+            
+            
+            char current = mapping[mapIdx];
+            bool leading = (digit >= 5);
+            
+            if(digit == 4 || digit == 9){
+                str = mapping[mapIdx + 1 + leading] + str;
+                str = current + str;
+            }else{
+                for(int i = 0; i < digit%5; i++){
+                    str = mapping[mapIdx] + str;
+                }
+                if(leading) str = mapping[mapIdx + 1] + str;
+            }
+            mapIdx += 2;
         }
-        
-        if(value == 9){
-            res = one+ten;
-        }else if (value >= 5){
-            res = five + printStr(value-5, ten, five, one);
-        }else if (value == 4){
-            res = one+five;
-        }else{
-            res = one + printStr(value -1, ten, five, one);
-        }
-        return res;
+        return str;
     }
 };

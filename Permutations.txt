@@ -1,33 +1,47 @@
+Given a collection of numbers, return all possible permutations.
+
+For example,
+[1,2,3] have the following permutations:
+[1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], and [3,2,1].
+
+
+
+
+// Recursive 
 class Solution {
 public:
-    vector<vector<int> > permute(vector<int> &num) {
-        // Start typing your C/C++ solution below
-        // DO NOT write int main() function
-        
+    vector<vector<int> > permute(vector<int> &num, int start) {
+    
         vector<vector<int> >res;
-        if(num.size() == 1){
-            vector<int> val;
-            val.push_back(*num.begin());
-            res.push_back(val);
+        if( start == num.size()-1){
+            res.push_back(vector<int>(1, num[start]));
         }
         
-        vector<int>::iterator it;
-        for(it = num.begin(); it < num.end(); it++){
-            int curr = *it;
-            num.erase(it);
-            vector<vector<int> > subres = permute(num);
+        for(int i = start ; i < num.size(); i++){
+            int curr = num[i];
+            num[i] = num[start];
+            num[start] = curr;
             
-            vector<vector<int> >::iterator it2;
-            for(it2 = subres.begin(); it2 < subres.end(); it2++){
-                (*it2).insert((*it2).begin(), curr);
+            vector<vector<int> >subres = permute(num, start+1);
+            
+            vector<vector<int> >::iterator it;
+            for(it = subres.begin(); it < subres.end(); it++){
+                (*it).insert((*it).begin(), curr);
             }
             
+        
             res.insert(res.end(), subres.begin(), subres.end());
-            num.insert(it,curr);
+            curr = num[i];
+            num[i] = num[start];
+            num[start] = curr;
         }
         
-        return res;
+        return res;        
     }
-    
+
+    vector<vector<int> > permute(vector<int> &num) {
+        return permute(num, 0);
+
+    }
     
 };

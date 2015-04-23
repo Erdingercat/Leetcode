@@ -1,7 +1,13 @@
 class Solution {
 public:
+Given a roman numeral, convert it to an integer.
 
-    int charToInt(char c){    
+Input is guaranteed to be within the range from 1 to 3999.
+  
+  
+  
+  
+  int charToInt(char c){    
         switch(c){
             case 'I':
                 return 1;
@@ -24,22 +30,21 @@ public:
     }
     
     int romanToInt(string s) {
-        // Start typing your C/C++ solution below
-        // DO NOT write int main() function
-        
-        if(s.length() == 0){
-            return 0;
-        }else if (s.length()==1){
-            return charToInt( s[0] );
+        int n = s.length();
+        int val = 0;
+        int i = 0;
+        while(i < n){
+            int lft = charToInt( s[i] );
+            int rht = (i == n-1)?0:charToInt( s[i+1] );
+            
+            if(lft >= rht){
+                val += lft;
+                i++;
+            }else{
+                val += rht - lft;
+                i+= 2;
+            }
         }
-        
-        int lft = charToInt( s[0] );
-        int rht = charToInt( s[1] );
-        
-        if(lft >= rht){
-            return lft + romanToInt(s.substr(1));
-        }else{
-            return rht - lft + romanToInt(s.substr(2));
-        }
+        return val;
     }
 };
